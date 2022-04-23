@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import { render, screen } from '@testing-library/react';
 import { Welcome } from './Welcome';
 
