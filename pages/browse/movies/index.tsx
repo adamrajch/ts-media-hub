@@ -1,10 +1,12 @@
 /* eslint-disable arrow-body-style */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { Stack } from '@mantine/core';
 import Wrapper from '../../../components/Layout/Wrapper';
 import Banner from '../../../components/movies/Banner';
+import MovieSearch from '../../../components/movies/MovieSearch';
 import MoviesRow from '../../../components/movies/MoviesRow';
 import { Movie } from '../../../types/types';
-import requests from '../../../utils/movies/requests';
+import { requests } from '../../../utils/movies/requests';
 
 interface Props {
   trendingNow: Movie[];
@@ -14,6 +16,7 @@ interface Props {
   horrorMovies: Movie[];
   romanceMovies: Movie[];
   documentaries: Movie[];
+  popular: Movie[];
 }
 
 const MoviesHome = ({
@@ -24,17 +27,22 @@ const MoviesHome = ({
   horrorMovies,
   romanceMovies,
   topRated,
+  popular,
 }: Props) => {
   return (
     <Wrapper>
+      <MovieSearch />
       <Banner trendingNow={trendingNow} />
-      <MoviesRow title="Trending Now" movies={trendingNow} />
-      <MoviesRow title="topRated" movies={topRated} />
-      <MoviesRow title="actionMovies" movies={actionMovies} />
-      <MoviesRow title="comedyMovies" movies={comedyMovies} />
-      <MoviesRow title="documentaries" movies={documentaries} />
-      <MoviesRow title="horrorMovies" movies={horrorMovies} />
-      <MoviesRow title="romanceMovies" movies={romanceMovies} />
+      <Stack spacing={40}>
+        <MoviesRow title="Trending Now" movies={trendingNow} />
+        <MoviesRow title="Popular" movies={popular} />
+        <MoviesRow title="Top Rated" movies={topRated} />
+        <MoviesRow title="Action" movies={actionMovies} />
+        <MoviesRow title="Comedy" movies={comedyMovies} />
+        <MoviesRow title="documentaries" movies={documentaries} />
+        <MoviesRow title="Horror" movies={horrorMovies} />
+        <MoviesRow title="Romance" movies={romanceMovies} />
+      </Stack>
     </Wrapper>
   );
 };
@@ -50,6 +58,7 @@ export const getServerSideProps = async () => {
     horrorMovies,
     romanceMovies,
     documentaries,
+    popular,
   ] = await Promise.all([
     fetch(requests.fetchTrending).then((res) => res.json()),
     fetch(requests.fetchTopRated).then((res) => res.json()),
@@ -58,6 +67,7 @@ export const getServerSideProps = async () => {
     fetch(requests.fetchHorrorMovies).then((res) => res.json()),
     fetch(requests.fetchRomanceMovies).then((res) => res.json()),
     fetch(requests.fetchDocumentaries).then((res) => res.json()),
+    fetch(requests.fetchPopular).then((res) => res.json()),
   ]);
 
   return {
@@ -69,6 +79,7 @@ export const getServerSideProps = async () => {
       horrorMovies: horrorMovies.results,
       romanceMovies: romanceMovies.results,
       documentaries: documentaries.results,
+      popular: popular.results,
     },
   };
 };
