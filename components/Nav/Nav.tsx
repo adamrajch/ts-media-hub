@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   Anchor,
+  Avatar,
   Box,
   Button,
   Container,
@@ -14,6 +15,7 @@ import { useMediaQuery, useWindowScroll } from '@mantine/hooks';
 import { NextLink } from '@mantine/next';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import useAuth from '../../hooks/useAuth';
 import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 import useStyles from './Nav.styles';
 
@@ -24,6 +26,7 @@ export default function Nav() {
   const [visible, setVisible] = useState(true);
   const [isTop, setIsTop] = useState(true);
 
+  const { user } = useAuth();
   const { classes } = useStyles();
   const [scroll] = useWindowScroll();
   const { colorScheme } = useMantineColorScheme();
@@ -88,15 +91,22 @@ export default function Nav() {
                   <Anchor className={classes.anchor}>anime</Anchor>
                 </Link>
               </Group>
+
               <Group>
-                <Link href="/login" passHref>
-                  <Anchor className={classes.anchor}>Login</Anchor>
-                </Link>
-                <Link href="/signup" passHref>
-                  <Button component="a" size="xs">
-                    Sign up
-                  </Button>
-                </Link>
+                {user ? (
+                  <Avatar alt="profile" />
+                ) : (
+                  <>
+                    <Link href="/login" passHref>
+                      <Anchor className={classes.anchor}>Login</Anchor>
+                    </Link>
+                    <Link href="/signup" passHref>
+                      <Button component="a" size="xs">
+                        Sign up
+                      </Button>
+                    </Link>
+                  </>
+                )}
                 <ColorSchemeToggle />
               </Group>
             </>

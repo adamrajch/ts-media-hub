@@ -13,6 +13,7 @@ type MoviesRowProps = {
 export default function MoviesRow({ title, movies }: MoviesRowProps) {
   const rowRef = useRef<HTMLDivElement>(null);
   const { hovered, ref } = useHover();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isMoved, setIsMoved] = useState<boolean>(false);
   const [isLeftMost, setIsLeftMost] = useState<boolean>(true);
   const handleClick = (dir: string) => {
@@ -56,6 +57,7 @@ export default function MoviesRow({ title, movies }: MoviesRowProps) {
               transform: 'scale(1.8)',
             },
           }}
+          size="xl"
           onClick={() => handleClick('left')}
         >
           <ChevronLeftIcon />
@@ -64,9 +66,9 @@ export default function MoviesRow({ title, movies }: MoviesRowProps) {
           ref={rowRef}
           noWrap
           sx={{
-            // height: 150,
             overflowX: 'hidden',
             overflowY: 'hidden',
+            alignItems: 'flex-start',
           }}
         >
           {movies.map((movie) => (
@@ -74,6 +76,7 @@ export default function MoviesRow({ title, movies }: MoviesRowProps) {
           ))}
         </Group>
         <ActionIcon
+          size="xl"
           variant="transparent"
           sx={{
             position: 'absolute',

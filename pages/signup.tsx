@@ -13,8 +13,10 @@ import Link from 'next/link';
 import React from 'react';
 import { AiFillGithub } from 'react-icons/ai';
 import Wrapper from '../components/Layout/Wrapper';
+import useAuth from '../hooks/useAuth';
 
 export default function Signup() {
+  const { signUp } = useAuth();
   const form = useForm({
     initialValues: {
       email: '',
@@ -30,7 +32,7 @@ export default function Signup() {
   type FormValues = typeof form.values;
 
   const handleSubmit = async (values: FormValues) => {
-    console.log(values);
+    await signUp(values.email, values.password);
   };
 
   return (

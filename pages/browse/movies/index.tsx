@@ -1,8 +1,11 @@
 /* eslint-disable arrow-body-style */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Stack } from '@mantine/core';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { modalState, movieState } from '../../../atoms/MovieModalAtom';
 import Wrapper from '../../../components/Layout/Wrapper';
 import Banner from '../../../components/movies/Banner';
+import MovieModal from '../../../components/movies/MovieModal';
 import MovieSearch from '../../../components/movies/MovieSearch';
 import MoviesRow from '../../../components/movies/MoviesRow';
 import { Movie } from '../../../types/types';
@@ -29,6 +32,8 @@ const MoviesHome = ({
   topRated,
   popular,
 }: Props) => {
+  const [showModal, setShowModal] = useRecoilState(modalState);
+  const movie = useRecoilValue(movieState);
   return (
     <Wrapper>
       <MovieSearch />
@@ -43,6 +48,7 @@ const MoviesHome = ({
         <MoviesRow title="Horror" movies={horrorMovies} />
         <MoviesRow title="Romance" movies={romanceMovies} />
       </Stack>
+      {showModal && <MovieModal />}
     </Wrapper>
   );
 };

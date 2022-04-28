@@ -5,7 +5,9 @@ import { GetServerSidePropsContext } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useState } from 'react';
+import { RecoilRoot } from 'recoil';
 import GlobalStyle from '../components/Layout/GlobalStyle';
+import { AuthProvider } from '../hooks/useAuth';
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
@@ -28,7 +30,11 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
           <GlobalStyle />
           <NotificationsProvider>
-            <Component {...pageProps} />
+            <RecoilRoot>
+              <AuthProvider>
+                <Component {...pageProps} />
+              </AuthProvider>
+            </RecoilRoot>
           </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>

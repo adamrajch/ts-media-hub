@@ -11,6 +11,7 @@ export default function Wrapper({ children }: WrapperProps) {
     <div>
       <Nav />
       <Container
+        size="xl"
         sx={() => ({
           //   marginTop: 100,
           marginTop: 60,

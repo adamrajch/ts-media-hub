@@ -1,4 +1,4 @@
-import { ActionIcon, Stack, TextInput } from '@mantine/core';
+import { ActionIcon, Stack, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { MagnifyingGlassIcon } from '@modulz/radix-icons';
 import React, { useState } from 'react';
@@ -7,7 +7,8 @@ import { search } from '../../utils/movies/requests';
 import MoviesRow from './MoviesRow';
 
 export default function MovieSearch() {
-  const [results, setResults] = useState<Movie[] | []>([]);
+  const [results, setResults] = useState<Movie[] | null>(null);
+
   const form = useForm({
     initialValues: {
       query: '',
@@ -46,7 +47,13 @@ export default function MovieSearch() {
             e.key === 'Enter' && handleSubmit(form.values);
           }}
         />
-        <MoviesRow title="Search Results" movies={results} />
+
+        {results && results?.length > 0 ? (
+          <MoviesRow title="Search Results" movies={results} />
+        ) : null}
+        {results && results.length === 0 && (
+          <Title order={2}>No results...try a different search!</Title>
+        )}
       </Stack>
     </form>
   );

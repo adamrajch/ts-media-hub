@@ -3,8 +3,10 @@ import { useForm } from '@mantine/form';
 import Link from 'next/link';
 import React from 'react';
 import Wrapper from '../components/Layout/Wrapper';
+import useAuth from '../hooks/useAuth';
 
 export default function Login() {
+  const { signIn } = useAuth();
   const form = useForm({
     initialValues: {
       email: '',
@@ -20,7 +22,7 @@ export default function Login() {
   type FormValues = typeof form.values;
 
   const handleSubmit = async (values: FormValues) => {
-    console.log(values);
+    await signIn(values.email, values.password);
   };
 
   return (
