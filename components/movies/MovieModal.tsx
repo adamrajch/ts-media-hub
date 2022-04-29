@@ -1,5 +1,4 @@
-import { ActionIcon, Box, Group, Modal, Text } from '@mantine/core';
-import { PlayIcon, PlusIcon, SpeakerLoudIcon, SpeakerOffIcon } from '@modulz/radix-icons';
+import { ActionIcon, Box, Group, Modal, Stack, Text, Title } from '@mantine/core';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineHeart } from 'react-icons/ai';
 import ReactPlayer from 'react-player/lazy';
@@ -7,12 +6,12 @@ import { useRecoilState } from 'recoil';
 import { modalState, movieState } from '../../atoms/MovieModalAtom';
 import useAuth from '../../hooks/useAuth';
 import { Element, Genre } from '../../types/types';
+import AddMenuModal from './AddMenuModal';
 
 export default function MovieModal() {
   const [movie, setMovie] = useRecoilState(movieState);
   const [trailer, setTrailer] = useState('');
   const [showModal, setShowModal] = useRecoilState(modalState);
-  const [muted, setMuted] = useState(true);
   const [genres, setGenres] = useState<Genre[]>([]);
   const { user } = useAuth();
 
@@ -47,42 +46,30 @@ export default function MovieModal() {
       onClose={() => setShowModal(false)}
       size="70%"
       padding={0}
-      styles={{
-        modal: {
-          //   height: '100%',
-        },
-      }}
       withCloseButton={false}
     >
-      <Box sx={{ position: 'relative', height: '100%', minHeight: '60vh' }}>
+      <Box sx={{ position: 'relative', padding: 6, minHeight: '60vh' }}>
         <ReactPlayer
           url={`https://www.youtube.com/watch?v=${trailer}`}
           width="100%"
           height="100%"
           style={{ position: 'absolute', top: '0', left: '0' }}
           playing
-          muted={muted}
+          volume={0.5}
+          controls
         />
-        <Group
-          position="apart"
-          sx={{ position: 'relative', bottom: 30, paddingLeft: 20, paddingRight: 20 }}
-        >
-          <ActionIcon variant="transparent">
-            <PlayIcon />
-          </ActionIcon>
-          <ActionIcon variant="transparent">
-            <PlusIcon />
-          </ActionIcon>
-          <ActionIcon variant="transparent">
-            <AiOutlineHeart />
-          </ActionIcon>
-          <ActionIcon variant="transparent">
-            {muted ? <SpeakerOffIcon /> : <SpeakerLoudIcon />}
-          </ActionIcon>
-        </Group>
       </Box>
 
-      <Box px={40} py={10}>
+      <Stack spacing={4} px={40} pt={10} pb={30}>
+        <Group position="apart" sx={{}}>
+          <Title>{movie?.title || movie?.name}</Title>
+          <Group>
+            <AddMenuModal isBanner={false} />
+            <ActionIcon color="blue" variant="outline" size="xl" radius="xl">
+              <AiOutlineHeart />
+            </ActionIcon>
+          </Group>
+        </Group>
         <Group>
           <Text color="blue"> {movie!.vote_average * 10}% Match</Text>
           <Text> {movie?.release_date || movie?.first_air_date}</Text>
@@ -103,7 +90,7 @@ export default function MovieModal() {
 
           <Text component="span">Genres: {genres.map((genre) => genre.name).join(', ')}</Text>
         </Box>
-      </Box>
+      </Stack>
     </Modal>
   );
 }

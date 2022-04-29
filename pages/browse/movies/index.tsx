@@ -6,7 +6,6 @@ import { modalState, movieState } from '../../../atoms/MovieModalAtom';
 import Wrapper from '../../../components/Layout/Wrapper';
 import Banner from '../../../components/movies/Banner';
 import MovieModal from '../../../components/movies/MovieModal';
-import MovieSearch from '../../../components/movies/MovieSearch';
 import MoviesRow from '../../../components/movies/MoviesRow';
 import { Movie } from '../../../types/types';
 import { requests } from '../../../utils/movies/requests';
@@ -36,11 +35,12 @@ const MoviesHome = ({
   const movie = useRecoilValue(movieState);
   return (
     <Wrapper>
-      <MovieSearch />
-      <Banner trendingNow={trendingNow} />
+      {/* <MovieSearch /> */}
+
       <Stack spacing={40}>
+        <Banner trendingNow={trendingNow} />
         <MoviesRow title="Trending Now" movies={trendingNow} />
-        <MoviesRow title="Popular" movies={popular} />
+        {/* <MoviesRow title="Popular" movies={popular} /> */}
         <MoviesRow title="Top Rated" movies={topRated} />
         <MoviesRow title="Action" movies={actionMovies} />
         <MoviesRow title="Comedy" movies={comedyMovies} />
